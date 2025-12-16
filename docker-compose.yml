@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./dockerback
+    container_name: dockerback
+    restart: always
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./dockerfront
+    container_name: dockerfront
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

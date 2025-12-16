@@ -1,0 +1,46 @@
+name: Deploy Front + Backend
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: # ejecución manual
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: pipelineRepaso
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add host to known_hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy with Docker Compose
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
+
+            echo "🚀 Deploying application..."
+
+            cd ${{ secrets.APP_PATH }}
+
+            echo "🔄 Pull latest changes"
+            git pull origin master
+
+            echo "🛑 Stopping containers"
+            docker compose down
+
+            echo "🐳 Building & starting containers"
+            docker compose up -d --build
+
+            echo "✅ Deployment finished"
+          EOF
