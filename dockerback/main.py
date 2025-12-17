@@ -6,6 +6,7 @@ app = FastAPI()
 # Permitir peticiones desde el frontend
 origins = [
     "http://localhost:3000",
+    "http://52.15.91.123:3000",
     # puedes agregar otros dominios si es necesario
 ]
 
