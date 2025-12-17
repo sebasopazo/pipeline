@@ -28,19 +28,20 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-
+          
             echo "🚀 Deploying application..."
-
+          
             cd ${{ secrets.APP_PATH }}
-
+          
             echo "🔄 Pull latest changes"
             git pull origin master
-
+          
             echo "🛑 Stopping containers"
-            docker compose down
-
+            docker-compose down
+          
             echo "🐳 Building & starting containers"
-            docker compose up -d --build
-
+            docker-compose up -d --build
+          
             echo "✅ Deployment finished"
           EOF
+
