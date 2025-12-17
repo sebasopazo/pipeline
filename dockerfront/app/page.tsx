@@ -14,7 +14,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
 
   const fetchMessage = () => {
-    fetch("http://localhost:8000/hello")
+    fetch("http://52.15.91.123:8000/hello")
       .then((res) => res.json())
       .then((data) => setMessage(data.message))
       .catch((err) => console.error("Error:", err));
